@@ -1,25 +1,36 @@
 using UnityEngine;
 
-public class Ochiai_Item_Script : MonoBehaviour
+public class Ochiai_ItemMove_Script : MonoBehaviour
 {
+    [Header("射出時の角度")]
+    [SerializeField] private float moveAngle;
+    [Header("プレイヤーの位置 (Don't Set)")]
+    public Transform spawnTrans;
+    [Header("マーカの位置(Don't Set)")]
+    public Transform markerTrans;
+    [Header("このオブジェクト")]
+    [SerializeField] private GameObject itemObj;
     // Start is called once before the first execution of Update after the MonoBehaviour is created
     void Start()
     {
-        
+
     }
 
     // Update is called once per frame
     void Update()
     {
-        
+        ItemMove(markerTrans, spawnTrans, itemObj, moveAngle);
     }
 
-    public void ItemMove(Transform targetTrans, GameObject itemObj, float angle)
+    //アイテムの運動を制御する関数
+    //アイテムのprefabにはrigidBodyを付ける前提
+    public void ItemMove(Transform targetTrans,Transform startTrans, GameObject itemObj, float angle)
     {
         Rigidbody itemRb = itemObj.GetComponent<Rigidbody>();
-        itemRb.linearVelocity = CalculateVelocity(targetTrans.position, itemObj.transform.position, angle);
+        itemRb.linearVelocity = CalculateVelocity(targetTrans.position, startTrans.position, angle);
     }
 
+    //アイテムの運動のベクトルを計算する関数
     Vector3 CalculateVelocity(Vector3 targetPos, Vector3 startPos, float angle)
     {
         Vector3 direction = targetPos - startPos; // 目標までの方向ベクトル
