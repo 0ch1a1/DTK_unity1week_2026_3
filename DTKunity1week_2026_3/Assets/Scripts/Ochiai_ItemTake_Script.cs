@@ -22,6 +22,14 @@ public class Ochiai_ItemTake_Script : MonoBehaviour
     //ƒAƒCƒeƒ€‚ğæ“¾‚·‚é‚Æ‚«‚É‚±‚ÌŠÖ”‚ğˆ—‚·‚é
     public void TakeItem()
     {
-        itemSpawn_Script.currentItem = thisItem;
+        itemSpawn_Script.ChangeSpawnItem(thisItem);
+    }
+
+    private void OnTriggerEnter(Collider other)
+    {
+        if(other.gameObject.tag == "")
+        {
+            TakeItem();
+        }
     }
 }

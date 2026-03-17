@@ -1,25 +1,26 @@
+using Unity.VisualScripting;
 using UnityEngine;
 
 public class Ochiai_ItemMove_Script : MonoBehaviour
 {
     [Header("射出時の角度")]
-    [SerializeField] private float moveAngle;
+    [SerializeField] private float shootAngle;
     [Header("プレイヤーの位置 (Don't Set)")]
     public Transform spawnTrans;
     [Header("マーカの位置(Don't Set)")]
     public Transform markerTrans;
-    [Header("このオブジェクト")]
-    [SerializeField] private GameObject itemObj;
+    private GameObject itemObj;
     // Start is called once before the first execution of Update after the MonoBehaviour is created
     void Start()
     {
-
+        itemObj = gameObject;
+        ItemMove(markerTrans, spawnTrans, itemObj, shootAngle);
     }
 
     // Update is called once per frame
     void Update()
     {
-        ItemMove(markerTrans, spawnTrans, itemObj, moveAngle);
+        
     }
 
     //アイテムの運動を制御する関数
@@ -33,19 +34,38 @@ public class Ochiai_ItemMove_Script : MonoBehaviour
     //アイテムの運動のベクトルを計算する関数
     Vector3 CalculateVelocity(Vector3 targetPos, Vector3 startPos, float angle)
     {
-        Vector3 direction = targetPos - startPos; // 目標までの方向ベクトル
-        float heightDiff = direction.y;          // 高さの差
-        direction.y = 0;                         // 水平方向の距離計算のためyを0に
-        float distance = direction.magnitude;    // 水平距離
+        // 1. 距離と方向の計算
+        Vector3 diff = targetPos - startPos;
+        float heightDiff = diff.y;
+        Vector3 horizontalDiff = new Vector3(diff.x, 0, diff.z);
+        float distance = horizontalDiff.magnitude;
 
-        float angleRad = angle * Mathf.Deg2Rad;  // 角度をラジアンに変換
-        direction.y = distance * Mathf.Tan(angleRad); // 角度に合わせたベクトル高さ
-        distance += heightDiff / Mathf.Tan(angleRad); // 高低差の補正
+        
 
-        // 放物線の初速計算式: v = sqrt(g * d^2 / (2 * cos^2(a) * (d * tan(a) - h)))
-        float gravity = Physics.gravity.magnitude;
-        float v0 = Mathf.Sqrt(gravity * distance * distance / (2 * Mathf.Pow(Mathf.Cos(angleRad), 2) * (distance * Mathf.Tan(angleRad) - heightDiff)));
+        // 2. 角度をラジアンに変換
+        float angleRad = angle * Mathf.Deg2Rad;
 
-        return direction.normalized * v0;
+        // 3. 物理公式による初速計算
+        float g = Physics.gravity.magnitude;
+
+        // 公式: v0 = sqrt( (g * d^2) / (2 * cos^2(a) * (d * tan(a) - h)) )
+        float cosA = Mathf.Cos(angleRad);
+        float tanA = Mathf.Tan(angleRad);
+
+        float denominator = 2 * cosA * cosA * (distance * tanA - heightDiff);
+
+        // 分母が0以下（物理的にその角度で届かない）場合は発射不可
+        if (denominator <= 0)
+        {
+            Debug.LogWarning("現在の角度ではターゲットに届きません。角度を上げてください。");
+        }
+
+        float v0 = Mathf.Sqrt((g * distance * distance) / denominator);
+
+        // 4. 速度ベクトルの生成
+        Vector3 velocity = horizontalDiff.normalized * (v0 * cosA);
+        velocity.y = v0 * Mathf.Sin(angleRad);
+
+        return velocity;
     }
 }

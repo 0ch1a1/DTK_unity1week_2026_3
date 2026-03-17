@@ -1,6 +1,6 @@
 using UnityEngine;
 
-public class Ochiai_itemEffect_Script : MonoBehaviour
+public class Ochiai_ItemEffect_Script : MonoBehaviour
 {
     [Header("このオブジェクトのアイテムの種類")]
     [SerializeField] private HangingItems thisItem; 
