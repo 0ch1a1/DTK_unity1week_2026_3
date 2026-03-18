@@ -15,7 +15,12 @@ public class PlayerManager : MonoBehaviour
     [Header("攻撃判定用オブジェクト")]
     [SerializeField]private GameObject _attackObj;
 
+    //WASD入力を受け取る
     private Vector2 _moveInput;
+
+    //カメラに渡す用
+    private Vector2 _mouseInput;
+    public Vector2 MouseInput=> _mouseInput;
 
     private void Start()
     {
@@ -41,5 +46,10 @@ public class PlayerManager : MonoBehaviour
     public void Backstab()
     {
         Debug.Log("Backstab");
+    }
+
+    private void OnLook(InputValue value)
+    {
+        _mouseInput=value.Get<Vector2>();
     }
 }
