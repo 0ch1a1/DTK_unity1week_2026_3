@@ -1,10 +1,10 @@
 using UnityEngine;
-using TMPro; // ←追加
+using TMPro; 
 
 public class Timer : MonoBehaviour
 {
     public float timeLeft = 60f;
-    public TextMeshProUGUI timerText; // ←ここ変更
+    public TextMeshProUGUI timerText;
 
     void Update()
     {
