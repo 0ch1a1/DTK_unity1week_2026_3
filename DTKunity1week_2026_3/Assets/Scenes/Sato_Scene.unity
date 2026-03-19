@@ -278,8 +278,10 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::PlayerManager
   _moveSpeed: 5
-  _playerRb: {fileID: 328072751}
   _playerHp: 1
+  _attackCoolDown: 1000
+  _attackingSpan: 500
+  _playerRb: {fileID: 328072751}
   _attackObj: {fileID: 1561980350}
   _cameraObj: {fileID: 1062432950}
   _playersObj: {fileID: 1714277993}
@@ -1012,7 +1014,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!4 &1561980351
 Transform:
   m_ObjectHideFlags: 0
