@@ -33,7 +33,7 @@ public class CameraManager : MonoBehaviour
         if (Mathf.Abs(_mouseInput.x) > 0.0000001f)
         {
             _mouseInput.x *= _smoothSpeed;
-            transform.RotateAround(_COObj.transform.position, Vector3.up, _mouseInput.x);
+            transform.RotateAround(_COObj.transform.position, _COObj.transform.up, _mouseInput.x);
         }
         else
         {

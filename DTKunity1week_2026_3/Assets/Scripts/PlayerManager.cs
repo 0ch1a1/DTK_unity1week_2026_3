@@ -14,6 +14,8 @@ public class PlayerManager : MonoBehaviour
 
     [Header("攻撃判定用オブジェクト")]
     [SerializeField]private GameObject _attackObj;
+    [Header("カメラオブジェクト")]
+    [SerializeField]private GameObject _cameraObj;
 
     //WASD入力を受け取る
     private Vector2 _moveInput;
@@ -28,8 +30,11 @@ public class PlayerManager : MonoBehaviour
     }
     private void Update()
     {
-        Vector3 _move = new Vector3(_moveInput.x, 0, _moveInput.y);
-        _playerRb.linearVelocity = _move * _moveSpeed;
+        Vector3 cameraForwardDir = (transform.position-_cameraObj.transform.position).normalized;
+        Vector3 cameraRightDir=Vector3.Cross(Vector3.up,cameraForwardDir).normalized;
+        Vector3 moveDir=cameraForwardDir*_moveInput.y+cameraRightDir*_moveInput.x;
+        moveDir.y=0;
+        _playerRb.linearVelocity =moveDir*_moveSpeed;
     }
     private void OnMove(InputValue value)
     {
