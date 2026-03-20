@@ -882,7 +882,7 @@ MonoBehaviour:
   _dis: 7
   _limHigh: 6
   _limLow: 4
-  _smoothSpeed: 0.1
+  _smoothSpeed: 2
   _pm: {fileID: 328072749}
   _COObj: {fileID: 2062287088}
 --- !u!1 &1447409740
