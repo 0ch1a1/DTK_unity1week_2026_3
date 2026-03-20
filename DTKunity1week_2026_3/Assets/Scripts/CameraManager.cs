@@ -29,7 +29,6 @@ public class CameraManager : MonoBehaviour
         _mouseInput = _pm.MouseInput;
         
         //横回転
-        Debug.Log("mouse" + _mouseInput);
         if (Mathf.Abs(_mouseInput.x) > 0.0000001f)
         {
             _mouseInput.x *= _smoothSpeed;
@@ -56,7 +55,7 @@ public class CameraManager : MonoBehaviour
             else
             {
                 _mouseInput.y *= _smoothSpeed;
-                transform.RotateAround(_COObj.transform.position, transform.right, _mouseInput.y);
+                transform.RotateAround(_COObj.transform.position, Vector3.right, _mouseInput.y);
             }
         }
         else
