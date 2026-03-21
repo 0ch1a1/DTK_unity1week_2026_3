@@ -14,10 +14,10 @@ public class AttackManager : MonoBehaviour
     }
     private async void OnTriggerEnter(Collider other)
     {
-        _wasFront=false;
         if (other.CompareTag("Front"))
         {
             _wasFront=true;
+            await UniTask.Delay(1000).ContinueWith(()=>_wasFront=false);
         }
         else if (other.CompareTag("Back")&&!_wasFront)
         {
