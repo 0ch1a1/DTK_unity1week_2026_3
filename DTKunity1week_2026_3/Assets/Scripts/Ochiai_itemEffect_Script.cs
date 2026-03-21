@@ -46,34 +46,35 @@ public class Ochiai_ItemEffect_Script : MonoBehaviour
         {
             if (hit.collider.gameObject.tag == "ground")
             {
-                Vector3 genePos = new Vector3(hit.point.x, hit.point.y + 0.1f, hit.point.z);
-                // 角度を計算
-                float angle = 2 * Mathf.Rad2Deg * Mathf.Asin((float)0.1/radius);
-                int rayCount = Mathf.FloorToInt(360 / angle);
-                for (int i = 0; i < rayCount; i++)
-                {
-                    // 回転クォータニオンを作成し、前方ベクトルを回転させる
-                    Vector3 direction = Quaternion.Euler(0, angle, 0) * transform.forward;
-
-                    RaycastHit[] hitsAround = Physics.RaycastAll(genePos, direction, radius);
-
-                    foreach (RaycastHit hitAround in hitsAround)
-                    {
-                        if(hitAround.collider.gameObject.tag != "enemy")
-                        {
-                            break;
-                        }
-                        else
-                        {
-                            GameObject enemyObj = hitAround.collider.gameObject;
-                            Ochiai_EnemyMove_Script enemyMove_Script = enemyObj.GetComponent<Ochiai_EnemyMove_Script>();
-                            enemyMove_Script.cautionFlag = true;
-                        }
-
-                    }
-                }
                 //Vector3 genePos = new Vector3(hit.point.x, hit.point.y + 0.1f, hit.point.z);
-                //GameObject searchObj  = Instantiate(field, genePos, field.transform.rotation);
+                //// 角度を計算
+                //float angle = 2 * Mathf.Rad2Deg * Mathf.Asin((float)0.1/radius);
+                //int rayCount = Mathf.FloorToInt(360 / angle);
+                //for (int i = 0; i < rayCount; i++)
+                //{
+                //    // 回転クォータニオンを作成し、前方ベクトルを回転させる
+                //    Vector3 direction = Quaternion.Euler(0, angle, 0) * transform.forward;
+
+                //    RaycastHit[] hitsAround = Physics.RaycastAll(genePos, direction, radius);
+
+                //    foreach (RaycastHit hitAround in hitsAround)
+                //    {
+                //        if(hitAround.collider.gameObject.tag != "enemy")
+                //        {
+                //            break;
+                //        }
+                //        else
+                //        {
+                //            GameObject enemyObj = hitAround.collider.gameObject;
+                //            Ochiai_EnemyMove_Script enemyMove_Script = enemyObj.GetComponent<Ochiai_EnemyMove_Script>();
+                //            enemyMove_Script.cautionPos = hit.point;
+                //            enemyMove_Script.cautionFlag = true;
+                //        }
+
+                //    }
+                //}
+                Vector3 genePos = new Vector3(hit.point.x, hit.point.y + 0.1f, hit.point.z);
+                GameObject searchObj = Instantiate(field, genePos, field.transform.rotation);
             }
         }
     }

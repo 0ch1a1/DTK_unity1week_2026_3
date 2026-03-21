@@ -127,4 +127,4 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::Ochiai_FieldEffect_Script
   currentType: 1
-  DestroyTime: 5
+  DestroyTime: 0.1
