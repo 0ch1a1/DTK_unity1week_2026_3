@@ -5,6 +5,9 @@ TagManager:
   serializedVersion: 3
   tags:
   - Enemy
+  - Front
+  - Back
+  - PlayerAttack
   layers:
   - Default
   - TransparentFX
