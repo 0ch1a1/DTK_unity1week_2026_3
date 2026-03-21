@@ -1,3 +1,4 @@
+using Cysharp.Threading.Tasks;
 using Unity.VisualScripting;
 using UnityEngine;
 
@@ -11,15 +12,16 @@ public class AttackManager : MonoBehaviour
     private void Start()
     {
     }
-    private void OnTriggerEnter(Collider other)
+    private async void OnTriggerEnter(Collider other)
     {
         if (other.CompareTag("Front"))
         {
             _wasFront=true;
+            await UniTask.Delay(1000).ContinueWith(()=>_wasFront=false);
         }
         else if (other.CompareTag("Back")&&!_wasFront)
         {
-            _parentPM.Backstab();
+            await _parentPM.Backstab();
         }
         else if (other.CompareTag(""))
         {

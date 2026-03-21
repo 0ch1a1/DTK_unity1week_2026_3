@@ -84,9 +84,10 @@ public class PlayerManager : MonoBehaviour
     }
 
     //攻撃判定用オブジェクトから呼ぶ
-    public void Backstab()
+    public async UniTask Backstab()
     {
         Debug.Log("Backstab");
+        await HitStopManager.DoHitStop(0.2f,800);
     }
 
     private void OnLook(InputValue value)
