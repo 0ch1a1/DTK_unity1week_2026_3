@@ -134,4 +134,9 @@ public class PlayerManager : MonoBehaviour
     {
         _mouseInput = value.Get<Vector2>();
     }
+
+    public void GameOver()
+    {
+        Debug.Log("死んだ");
+    }
 }

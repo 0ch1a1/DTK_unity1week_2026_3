@@ -1,6 +1,6 @@
 using UnityEngine;
 
-public class EnemyDamageArea : MonoBehaviour
+public class EnemyShieldSystem : MonoBehaviour
 {
     [SerializeField] private int hp = 100;
     [SerializeField] private GameObject hitEffectPrefab;    // 前面（ガード用火花）
@@ -32,7 +32,7 @@ public class EnemyDamageArea : MonoBehaviour
         }
         else // 背面判定（ダメージ）
         {
-            hp -= 100;
+            hp -= 10;
             Debug.Log("背後ヒット！ 残りHP: " + hp);
             PlayEffect(damageEffectPrefab, hitPos);
 
