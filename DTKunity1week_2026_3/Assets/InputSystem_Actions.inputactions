@@ -95,6 +95,15 @@
                     "processors": "",
                     "interactions": "",
                     "initialStateCheck": true
+                },
+                {
+                    "name": "Item",
+                    "type": "Button",
+                    "id": "21cbb71c-9907-4147-aac5-a8a0df90adec",
+                    "expectedControlType": "",
+                    "processors": "",
+                    "interactions": "",
+                    "initialStateCheck": false
                 }
             ],
             "bindings": [
@@ -513,6 +522,28 @@
                     "processors": "",
                     "groups": ";Keyboard&Mouse;Touch",
                     "action": "Camera",
+                    "isComposite": false,
+                    "isPartOfComposite": false
+                },
+                {
+                    "name": "",
+                    "id": "9875ffe4-f1e4-4f8e-a923-c9c4afd758e7",
+                    "path": "<Mouse>/rightButton",
+                    "interactions": "Press(behavior=2)",
+                    "processors": "",
+                    "groups": ";Keyboard&Mouse;KeyBordMouse",
+                    "action": "Item",
+                    "isComposite": false,
+                    "isPartOfComposite": false
+                },
+                {
+                    "name": "",
+                    "id": "50053d6b-edbe-49be-bb44-8d2faa62a836",
+                    "path": "<SwitchProControllerHID>/buttonNorth",
+                    "interactions": "Press(behavior=2)",
+                    "processors": "",
+                    "groups": "",
+                    "action": "Item",
                     "isComposite": false,
                     "isPartOfComposite": false
                 }
