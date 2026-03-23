@@ -1,3 +1,6 @@
+using System;
+using System.Threading.Tasks;
+using Cysharp.Threading.Tasks;
 using UnityEngine;
 
 public class EnemyShieldSystem : MonoBehaviour
@@ -6,7 +9,10 @@ public class EnemyShieldSystem : MonoBehaviour
     [SerializeField] private GameObject hitEffectPrefab;    // 前面（ガード用火花）
     [SerializeField] private GameObject damageEffectPrefab; // 背後（ダメージ用血飛沫）
 
-    void OnTriggerEnter(Collider other)
+    [SerializeField] private Animator _enemyAnimator;
+    private bool wasDead=false;
+    
+    private void OnTriggerEnter(Collider other)
     {
         // 1. タグチェック
         if (!other.CompareTag("PlayerAttack")) return;
@@ -19,7 +25,7 @@ public class EnemyShieldSystem : MonoBehaviour
 
         // 3. 攻撃が来た方向を計算
         Vector3 attackDirection = (other.transform.position - transform.position).normalized;
-        
+
         // 4. 内積で前後判定（transform.forward を基準にする）
         float dot = Vector3.Dot(transform.forward, attackDirection);
 
@@ -32,17 +38,21 @@ public class EnemyShieldSystem : MonoBehaviour
         }
         else // 背面判定（ダメージ）
         {
-            hp -= 10;
+            hp -= 100;
             Debug.Log("背後ヒット！ 残りHP: " + hp);
             PlayEffect(damageEffectPrefab, hitPos);
 
-            if (hp <= 0) Die();
+            if (hp <= 0 && !wasDead)
+            {
+                wasDead=true;
+                Die().Forget();
+            } 
         }
 
         // 5. 攻撃済みのフラグを立てる
         if (attack != null)
         {
-            attack.hasHit = true; 
+            attack.hasHit = true;
         }
     }
 
@@ -51,9 +61,17 @@ public class EnemyShieldSystem : MonoBehaviour
         if (prefab != null) Instantiate(prefab, pos, Quaternion.identity);
     }
 
-    void Die()
+    private async UniTask Die()
     {
         Debug.Log("エネミー撃破");
+        _enemyAnimator.SetBool("die", true);
+        await UniTask.WaitUntil(() =>
+                    {
+                        var state = _enemyAnimator.GetCurrentAnimatorStateInfo(0);
+                        return state.IsName("Armature|die 0") && state.normalizedTime >= 1.0f;
+                    });
+        _enemyAnimator.SetBool("die", false);
+        ScoreManager.score+=100;
         Destroy(gameObject);
     }
 }

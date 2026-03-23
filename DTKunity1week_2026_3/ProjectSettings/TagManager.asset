@@ -5,6 +5,12 @@ TagManager:
   serializedVersion: 3
   tags:
   - Back
+  - PlayerAttack
+  - enemy
+  - ground
+  - Enemy
+  - Front
+  - Weed
   layers:
   - Default
   - TransparentFX

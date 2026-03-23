@@ -108,7 +108,7 @@ public class PlayerManager : MonoBehaviour
                 _attacking = true;
                 Debug.Log("Attack");
                 _playerAnimator.SetBool("attack", true);
-                UniTask.Delay(200).ContinueWith(() => _attackObj.SetActive(true)).Forget();
+                UniTask.Delay(600).ContinueWith(() => _attackObj.SetActive(true)).Forget();
                 await UniTask.WaitUntil(() =>
                     {
                         var state = _playerAnimator.GetCurrentAnimatorStateInfo(0);

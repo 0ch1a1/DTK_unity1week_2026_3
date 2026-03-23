@@ -3,10 +3,10 @@ using UnityEngine;
 public class EnemyLookArea : MonoBehaviour
 {
     [Header("設定")]
-    [SerializeField] private float rayDistance = 10f;
+    [SerializeField] private float rayDistance = 100f;
     [SerializeField] private int rayCount = 36; // 負荷軽減のため少し調整（10度刻みなら36）
     [SerializeField] private string targetTag = "Player"; // 検知対象のタグ
-    
+
     [Header("アクティブにするオブジェクト")]
     [SerializeField] private GameObject objectToActivate;
 
@@ -49,6 +49,10 @@ public class EnemyLookArea : MonoBehaviour
         if (foundPlayer)
         {
             ActivateTarget();
+        }
+        else
+        {
+            Debug.Log("Non");
         }
     }
 
