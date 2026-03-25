@@ -1,4 +1,7 @@
 using UnityEngine;
+using Cysharp.Threading.Tasks;
+using Unity.VisualScripting;
+using TMPro;
 
 public class EnemyLookArea : MonoBehaviour
 {
@@ -9,7 +12,9 @@ public class EnemyLookArea : MonoBehaviour
 
     [Header("アクティブにするオブジェクト")]
     [SerializeField] private GameObject objectToActivate;
+    [SerializeField] private Animator _enemyAnimator;
 
+    private bool attacking=false;
     private void Start()
     {
         // 初期状態ではオフにしておく（必要であれば）
@@ -46,22 +51,28 @@ public class EnemyLookArea : MonoBehaviour
         }
 
         // 検知結果に基づいてオブジェクトをアクティブ化
-        if (foundPlayer)
+        if (foundPlayer&&!attacking)
         {
-            ActivateTarget();
-        }
-        else
-        {
-            Debug.Log("Non");
+            attacking=true;
+            ActivateTarget().Forget();
         }
     }
 
-    private void ActivateTarget()
+    private async UniTask ActivateTarget()
     {
         if (objectToActivate != null && !objectToActivate.activeSelf)
         {
+            _enemyAnimator.SetBool("attack",true);
+            await UniTask.Delay(400);
             objectToActivate.SetActive(true);
-            Debug.Log("プレイヤーを検知！オブジェクトを起動しました。");
+            await UniTask.WaitUntil(() =>    
+            {
+                var state = _enemyAnimator.GetCurrentAnimatorStateInfo(0);
+                return state.IsName("Armature|Attack_2") && state.normalizedTime >= 1.0f;
+            });
+            _enemyAnimator.SetBool("attack",false);
+            objectToActivate.SetActive(false);
+            attacking=false;
         }
     }
 }

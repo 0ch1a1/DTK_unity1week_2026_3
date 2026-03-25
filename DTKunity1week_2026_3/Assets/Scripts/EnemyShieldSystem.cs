@@ -66,10 +66,10 @@ public class EnemyShieldSystem : MonoBehaviour
         Debug.Log("エネミー撃破");
         _enemyAnimator.SetBool("die", true);
         await UniTask.WaitUntil(() =>
-                    {
-                        var state = _enemyAnimator.GetCurrentAnimatorStateInfo(0);
-                        return state.IsName("Armature|die 0") && state.normalizedTime >= 1.0f;
-                    });
+        {
+            var state = _enemyAnimator.GetCurrentAnimatorStateInfo(0);
+            return state.IsName("Armature|die 0") && state.normalizedTime >= 1.0f;
+        });
         _enemyAnimator.SetBool("die", false);
         ScoreManager.score+=100;
         Destroy(gameObject);

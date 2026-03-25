@@ -48,6 +48,8 @@ public class PlayerManager : MonoBehaviour
     //アニメーション終了を取得
     private AnimatorStateInfo _animeInfo;
 
+    private bool _wasDead=false;
+
     private void Start()
     {
         _playerRb.linearVelocity = Vector3.zero;
@@ -135,8 +137,23 @@ public class PlayerManager : MonoBehaviour
         _mouseInput = value.Get<Vector2>();
     }
 
-    public void GameOver()
+    public async UniTask GameOver()
     {
+        _playerAnimator.SetBool("die",true);
+        await UniTask.WaitUntil(() =>
+            {
+                var state = _playerAnimator.GetCurrentAnimatorStateInfo(0);
+                return state.IsName("Armature|die") && state.normalizedTime >= 1.0f;
+            });
         Debug.Log("死んだ");
+    }
+
+    private void OnTriggerEnter(Collider other)
+    {
+        if (other.CompareTag("EnemyAttack")&&!_wasDead)
+        {
+            _wasDead=true;
+            GameOver().Forget();
+        }
     }
 }
