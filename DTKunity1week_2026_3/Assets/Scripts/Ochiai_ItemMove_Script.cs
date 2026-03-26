@@ -5,30 +5,25 @@ public class Ochiai_ItemMove_Script : MonoBehaviour
 {
     [Header("射出時の角度")]
     [SerializeField] private float shootAngle;
-    [Header("プレイヤーの位置 (Don't Set)")]
-    public Transform spawnTrans;
-    [Header("マーカの位置(Don't Set)")]
-    public Transform markerTrans;
     private GameObject itemObj;
     // Start is called once before the first execution of Update after the MonoBehaviour is created
     void Start()
     {
-        itemObj = gameObject;
-        ItemMove(markerTrans, spawnTrans, itemObj, shootAngle);
     }
 
     // Update is called once per frame
     void Update()
     {
-        
+
     }
 
     //アイテムの運動を制御する関数
     //アイテムのprefabにはrigidBodyを付ける前提
-    public void ItemMove(Transform targetTrans,Transform startTrans, GameObject itemObj, float angle)
+    public void ItemMove(Transform targetTrans, Transform startTrans)
     {
-        Rigidbody itemRb = itemObj.GetComponent<Rigidbody>();
-        itemRb.linearVelocity = CalculateVelocity(targetTrans.position, startTrans.position, angle);
+        Rigidbody itemRb = gameObject.GetComponent<Rigidbody>();
+        itemRb.linearVelocity = CalculateVelocity(targetTrans.position, startTrans.position, shootAngle);
+        Debug.Log("アイテム" + itemRb.linearVelocity);
     }
 
     //アイテムの運動のベクトルを計算する関数
@@ -40,7 +35,7 @@ public class Ochiai_ItemMove_Script : MonoBehaviour
         Vector3 horizontalDiff = new Vector3(diff.x, 0, diff.z);
         float distance = horizontalDiff.magnitude;
 
-        
+
 
         // 2. 角度をラジアンに変換
         float angleRad = angle * Mathf.Deg2Rad;

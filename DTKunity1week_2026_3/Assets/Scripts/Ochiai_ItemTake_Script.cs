@@ -2,9 +2,9 @@ using UnityEngine;
 
 public class Ochiai_ItemTake_Script : MonoBehaviour
 {
-    [Header("‚±‚ÌƒIƒuƒWƒFƒNƒg‚©‚çæ“¾‚·‚éƒAƒCƒeƒ€‚Ìí—Ş")]
+    [Header("ï¿½ï¿½ï¿½ÌƒIï¿½uï¿½Wï¿½Fï¿½Nï¿½gï¿½ï¿½ï¿½ï¿½æ“¾ï¿½ï¿½ï¿½ï¿½Aï¿½Cï¿½eï¿½ï¿½ï¿½Ìï¿½ï¿½")]
     [SerializeField] private HangingItems thisItem;
-    [Header("ƒAƒCƒeƒ€‚ğ¶¬‚·‚é‚½‚ß‚ÌƒXƒNƒŠƒvƒg")]
+    [Header("ï¿½Aï¿½Cï¿½eï¿½ï¿½ï¿½ğ¶ï¿½ï¿½ï¿½ï¿½é‚½ï¿½ß‚ÌƒXï¿½Nï¿½ï¿½ï¿½vï¿½g")]
     [SerializeField] private Ochiai_ItemSpawn_Script itemSpawn_Script;
     // Start is called once before the first execution of Update after the MonoBehaviour is created
     void Start()
@@ -18,8 +18,8 @@ public class Ochiai_ItemTake_Script : MonoBehaviour
         
     }
 
-    //ƒAƒCƒeƒ€‚ğæ“¾‚·‚éŠÖ”, ŠeƒAƒCƒeƒ€æ“¾êŠ‚ÌƒIƒuƒWƒFƒNƒg‚É‚Â‚¯‚é
-    //ƒAƒCƒeƒ€‚ğæ“¾‚·‚é‚Æ‚«‚É‚±‚ÌŠÖ”‚ğˆ—‚·‚é
+    //ï¿½Aï¿½Cï¿½eï¿½ï¿½ï¿½ï¿½ï¿½æ“¾ï¿½ï¿½ï¿½ï¿½Öï¿½, ï¿½eï¿½Aï¿½Cï¿½eï¿½ï¿½ï¿½æ“¾ï¿½êŠï¿½ÌƒIï¿½uï¿½Wï¿½Fï¿½Nï¿½gï¿½É‚Â‚ï¿½ï¿½ï¿½
+    //ï¿½Aï¿½Cï¿½eï¿½ï¿½ï¿½ï¿½ï¿½æ“¾ï¿½ï¿½ï¿½ï¿½Æ‚ï¿½ï¿½É‚ï¿½ï¿½ÌŠÖï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½
     public void TakeItem()
     {
         itemSpawn_Script.ChangeSpawnItem(thisItem);

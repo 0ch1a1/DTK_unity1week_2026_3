@@ -6,7 +6,7 @@ using static UnityEngine.GraphicsBuffer;
 [ExecuteAlways]
 public class Ochiai_EnemyMove_Script : MonoBehaviour
 {
-    [SerializeField] private SplineAnimate splineAnimate;
+    //[SerializeField] private SplineAnimate splineAnimate;
     //[SerializeField] private  SplineContainer spline;
     //[SerializeField] private GameObject followObject;
     //private float t;
@@ -161,7 +161,7 @@ public class Ochiai_EnemyMove_Script : MonoBehaviour
             //    currentTargetPos = cautionPos;
             //}
             //    _currentState = MovingState.Chase;
-            splineAnimate.enabled = true;
+            //splineAnimate.enabled = true;
             _currentState = MovingState.Patrol;
 
         } 
@@ -182,7 +182,7 @@ public class Ochiai_EnemyMove_Script : MonoBehaviour
         if (cautionFlag)
         {
             waitTime = cationSearchSec;
-            splineAnimate.enabled = false;
+            //splineAnimate.enabled = false;
             //changeState = MovingState.Chase;
             _currentState = MovingState.Wait;
             cautionFlag = false;

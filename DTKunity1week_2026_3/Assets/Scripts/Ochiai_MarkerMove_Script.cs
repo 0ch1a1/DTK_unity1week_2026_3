@@ -1,35 +1,51 @@
 using Unity.VisualScripting;
 using UnityEngine;
 using UnityEngine.InputSystem;
+using Cysharp.Threading.Tasks;
+
 
 public class Ochiai_MarkerMove_Script : MonoBehaviour
 {
-    [SerializeField] private Transform playerTrans;
-    [SerializeField] private Transform groundTrans;
     [SerializeField] private Ochiai_ItemSpawn_Script itemSpawn_Script;
-    public Ochiai_ItemMove_Script itemMove_Script;
-    private bool markerVisiableFlag;
+    [SerializeField] private GameObject _markerObj;
+    [SerializeField] private GameObject _playerObj;
+    [Header("プレイヤーのAnimator")]
+    [SerializeField] private Animator _playerAnimator;
+
     private Vector3 currentPos;
+
+    private bool isHolding;
+
+    [SerializeField]private PlayerManager _pm;
+
     // Start is called once before the first execution of Update after the MonoBehaviour is created
     void Start()
     {
-        markerVisiableFlag = false;
-        GetComponent<Renderer>().enabled = false;
+        _markerObj.SetActive(false);
     }
 
     // Update is called once per frame
     void Update()
     {
-        UsingItem();
+        //UsingItem();
+        if (isHolding)
+        {
+            _markerObj.transform.position = MarkerMove();
+        }
     }
 
     //マーカーを動かす関数
     private Vector3 MarkerMove()
     {
-        Ray ray = Camera.main.ScreenPointToRay(Mouse.current.position.ReadValue());
+        //Ray ray = Camera.main.ScreenPointToRay(Mouse.current.position.ReadValue());
+        Ray ray = new Ray(
+            Camera.main.transform.position,
+            Camera.main.transform.forward
+        );
         RaycastHit hit;
 
-        if (Physics.Raycast(ray, out hit))
+
+        if (Physics.Raycast(ray, out hit, 100))
         {
             if (hit.collider.gameObject.tag == "ground")
             {
@@ -39,35 +55,54 @@ public class Ochiai_MarkerMove_Script : MonoBehaviour
             {
                 //currentPos = new Vector3(playerTrans.position.x, groundTrans.position.y + 0.01f, playerTrans.position.z);
             }
+            return currentPos;
         }
-        
+
 
         return currentPos;
     }
 
     private void MarkerVisializeChange(bool flag)
     {
-        markerVisiableFlag = flag;
-        GetComponent<Renderer>().enabled = flag;
+        _markerObj.SetActive(flag);
     }
-
-    public void UsingItem()
+    private async UniTask OnItem(InputValue value)
     {
-        if (Mouse.current.rightButton.wasPressedThisFrame)
+        if (_pm.controllerStop == true)
         {
-            MarkerVisializeChange(true);
-            //debug
-            itemSpawn_Script.ChangeSpawnItem(HangingItems.Stone);
+            return;
         }
-        if (Mouse.current.rightButton.isPressed)
+        else
         {
-            transform.position = MarkerMove();
-            
-        }
-        if (Mouse.current.rightButton.wasReleasedThisFrame)
-        {
-            itemSpawn_Script.ItemSpawn();
-            MarkerVisializeChange(false);
+            if (value.isPressed)
+            {
+                if (!isHolding)
+                {
+                    // 押した瞬間
+                    MarkerVisializeChange(true);
+                    itemSpawn_Script.ChangeSpawnItem(HangingItems.Stone);
+                }
+
+                isHolding = true;
+            }
+            else
+            {
+                // 離した瞬間
+                //等価方向へプレイヤーモデルを向ける
+                _pm.controllerStop = true;
+                _playerObj.transform.forward = _markerObj.transform.position - _playerObj.transform.position;
+                _playerAnimator.SetBool("item", true);
+                itemSpawn_Script.ItemSpawn();
+                MarkerVisializeChange(false);
+                await UniTask.WaitUntil(() =>
+                    {
+                        var state = _playerAnimator.GetCurrentAnimatorStateInfo(0);
+                        return state.IsName("Armature|Throw") && state.normalizedTime >= 1.0f;
+                    });
+                _playerAnimator.SetBool("item", false);
+                isHolding = false;
+                _pm.controllerStop=false;
+            }
         }
     }
 }

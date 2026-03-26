@@ -12,17 +12,17 @@ public class Ochiai_ItemSpawn_Script : MonoBehaviour
     public HangingItems currentItem;
     [Header("このスクリプト")]
     [SerializeField] private Ochiai_ItemSpawn_Script thisScript;
-    [SerializeField] private Ochiai_MarkerMove_Script markerMove_Script;
+    [SerializeField] private GameObject _markerObj;
     // Start is called once before the first execution of Update after the MonoBehaviour is created
     void Start()
     {
-        
+
     }
 
     // Update is called once per frame
     void Update()
     {
-        
+
     }
 
     //持っている（生成する）アイテムの種類を変える関数
@@ -33,12 +33,12 @@ public class Ochiai_ItemSpawn_Script : MonoBehaviour
         switch (currentItem)
         {
             case HangingItems.None:
-                currentSpawnObj = null; 
+                currentSpawnObj = null;
                 break;
             case HangingItems.Stone:
                 currentSpawnObj = spawnObjs[0];
                 break;
-            case HangingItems.Smoke: 
+            case HangingItems.Smoke:
                 currentSpawnObj = spawnObjs[1];
                 break;
         }
@@ -48,12 +48,11 @@ public class Ochiai_ItemSpawn_Script : MonoBehaviour
     //アイテムを使用するときにこの関数を処理する
     public void ItemSpawn()
     {
-        if(currentItem != HangingItems.None)
+        if (currentItem != HangingItems.None)
         {
             GameObject cloneItemObj = Instantiate(currentSpawnObj, spawnTrans.position, spawnTrans.rotation);
             Ochiai_ItemMove_Script ItemMove_Script = cloneItemObj.GetComponent<Ochiai_ItemMove_Script>();
-            ItemMove_Script.markerTrans = markerMove_Script.transform;
-            ItemMove_Script.spawnTrans = spawnTrans;
+            ItemMove_Script.ItemMove(_markerObj.transform, spawnTrans);
             currentItem = HangingItems.None;
         }
     }
