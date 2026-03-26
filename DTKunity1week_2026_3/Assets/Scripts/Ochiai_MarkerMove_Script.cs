@@ -1,51 +1,35 @@
 using Unity.VisualScripting;
 using UnityEngine;
 using UnityEngine.InputSystem;
-using Cysharp.Threading.Tasks;
-
 
 public class Ochiai_MarkerMove_Script : MonoBehaviour
 {
+    [SerializeField] private Transform playerTrans;
+    [SerializeField] private Transform groundTrans;
     [SerializeField] private Ochiai_ItemSpawn_Script itemSpawn_Script;
-    [SerializeField] private GameObject _markerObj;
-    [SerializeField] private GameObject _playerObj;
-    [Header("プレイヤーのAnimator")]
-    [SerializeField] private Animator _playerAnimator;
-
+    public Ochiai_ItemMove_Script itemMove_Script;
+    private bool markerVisiableFlag;
     private Vector3 currentPos;
-
-    private bool isHolding;
-
-    [SerializeField]private PlayerManager _pm;
-
     // Start is called once before the first execution of Update after the MonoBehaviour is created
     void Start()
     {
-        _markerObj.SetActive(false);
+        markerVisiableFlag = false;
+        GetComponent<Renderer>().enabled = false;
     }
 
     // Update is called once per frame
     void Update()
     {
-        //UsingItem();
-        if (isHolding)
-        {
-            _markerObj.transform.position = MarkerMove();
-        }
+        UsingItem();
     }
 
     //マーカーを動かす関数
     private Vector3 MarkerMove()
     {
-        //Ray ray = Camera.main.ScreenPointToRay(Mouse.current.position.ReadValue());
-        Ray ray = new Ray(
-            Camera.main.transform.position,
-            Camera.main.transform.forward
-        );
+        Ray ray = Camera.main.ScreenPointToRay(Mouse.current.position.ReadValue());
         RaycastHit hit;
 
-
-        if (Physics.Raycast(ray, out hit, 100))
+        if (Physics.Raycast(ray, out hit))
         {
             if (hit.collider.gameObject.tag == "ground")
             {
@@ -55,54 +39,35 @@ public class Ochiai_MarkerMove_Script : MonoBehaviour
             {
                 //currentPos = new Vector3(playerTrans.position.x, groundTrans.position.y + 0.01f, playerTrans.position.z);
             }
-            return currentPos;
         }
-
+        
 
         return currentPos;
     }
 
     private void MarkerVisializeChange(bool flag)
     {
-        _markerObj.SetActive(flag);
+        markerVisiableFlag = flag;
+        GetComponent<Renderer>().enabled = flag;
     }
-    private async UniTask OnItem(InputValue value)
-    {
-        if (_pm.controllerStop == true)
-        {
-            return;
-        }
-        else
-        {
-            if (value.isPressed)
-            {
-                if (!isHolding)
-                {
-                    // 押した瞬間
-                    MarkerVisializeChange(true);
-                    itemSpawn_Script.ChangeSpawnItem(HangingItems.Stone);
-                }
 
-                isHolding = true;
-            }
-            else
-            {
-                // 離した瞬間
-                //等価方向へプレイヤーモデルを向ける
-                _pm.controllerStop = true;
-                _playerObj.transform.forward = _markerObj.transform.position - _playerObj.transform.position;
-                _playerAnimator.SetBool("item", true);
-                itemSpawn_Script.ItemSpawn();
-                MarkerVisializeChange(false);
-                await UniTask.WaitUntil(() =>
-                    {
-                        var state = _playerAnimator.GetCurrentAnimatorStateInfo(0);
-                        return state.IsName("Armature|Throw") && state.normalizedTime >= 1.0f;
-                    });
-                _playerAnimator.SetBool("item", false);
-                isHolding = false;
-                _pm.controllerStop=false;
-            }
+    public void UsingItem()
+    {
+        if (Mouse.current.rightButton.wasPressedThisFrame)
+        {
+            MarkerVisializeChange(true);
+            //debug
+            itemSpawn_Script.ChangeSpawnItem(HangingItems.Stone);
+        }
+        if (Mouse.current.rightButton.isPressed)
+        {
+            transform.position = MarkerMove();
+            
+        }
+        if (Mouse.current.rightButton.wasReleasedThisFrame)
+        {
+            itemSpawn_Script.ItemSpawn();
+            MarkerVisializeChange(false);
         }
     }
 }

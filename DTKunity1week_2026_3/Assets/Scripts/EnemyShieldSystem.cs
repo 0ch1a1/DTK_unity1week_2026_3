@@ -71,7 +71,7 @@ public class EnemyShieldSystem : MonoBehaviour
             return state.IsName("Armature|die 0") && state.normalizedTime >= 1.0f;
         });
         _enemyAnimator.SetBool("die", false);
-        ScoreManager.score+=100;
+        ScoreManager.SetScoreTMP(10);
         Destroy(gameObject);
     }
 }

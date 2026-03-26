@@ -12,6 +12,7 @@ public class HitStopManager : MonoBehaviour
         _isStopping = true;
 
         Time.timeScale = 0;
+        await UniTask.Delay(250, ignoreTimeScale: true).ContinueWith(() => Time.timeScale = timeScale);
         await UniTask.Delay(stopTime, ignoreTimeScale: true).ContinueWith(() => Time.timeScale = 1f);
 
         _isStopping = false;
