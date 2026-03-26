@@ -6457,6 +6457,39 @@ BoxCollider:
   serializedVersion: 3
   m_Size: {x: 2.0447772, y: 1.1866866, z: 2.3442965}
   m_Center: {x: -0.04244575, y: 0.40666363, z: -0.034866095}
+--- !u!1 &876961138
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 876961139}
+  m_Layer: 0
+  m_Name: Enemy
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &876961139
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 876961138}
+  serializedVersion: 2
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: -18.4, y: 0.36, z: 7.2}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children:
+  - {fileID: 1033910035}
+  - {fileID: 927475890}
+  m_Father: {fileID: 0}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &882839779 stripped
 GameObject:
   m_CorrespondingSourceObject: {fileID: -3497411933697491636, guid: 0795b596d072a714c95e59ccfccb3566, type: 3}
@@ -6773,7 +6806,6 @@ GameObject:
   - component: {fileID: 927475891}
   - component: {fileID: 927475893}
   - component: {fileID: 927475894}
-  - component: {fileID: 927475895}
   m_Layer: 0
   m_Name: Enemy
   m_TagString: Back
@@ -6789,14 +6821,14 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 927475889}
   serializedVersion: 2
-  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: -18.4, y: 0.36, z: 7.2}
+  m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children:
   - {fileID: 2024820206}
   - {fileID: 1356723786}
-  m_Father: {fileID: 0}
+  m_Father: {fileID: 876961139}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!136 &927475891
 CapsuleCollider:
@@ -6844,7 +6876,7 @@ Rigidbody:
   m_ImplicitCom: 1
   m_ImplicitTensor: 1
   m_UseGravity: 1
-  m_IsKinematic: 1
+  m_IsKinematic: 0
   m_Interpolate: 0
   m_Constraints: 80
   m_CollisionDetection: 0
@@ -6876,28 +6908,13 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 39bd4464c0eaee14abeeddddc1d05d18, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::EnemyLookArea
-  rayDistance: 100
+  rayDistance: 25
   rayCount: 120
   targetTag: Player
   objectToActivate: {fileID: 1356723785}
   _enemyAnimator: {fileID: 2024820207}
---- !u!114 &927475895
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 927475889}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 77730d5d819960c4ea75999cdc451c3d, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: Assembly-CSharp::Ochiai_EnemyMove_Script
-  RotateSpeed: 2
-  cautionFlag: 0
-  cautionPos: {x: 0, y: 0, z: 0}
-  cationSearchSec: 5
-  _currentState: 1
+  _center: {fileID: 1033910034}
+  _rb: {fileID: 927475892}
 --- !u!1 &928491955 stripped
 GameObject:
   m_CorrespondingSourceObject: {fileID: 7592205937178410845, guid: 0795b596d072a714c95e59ccfccb3566, type: 3}
@@ -7715,6 +7732,37 @@ BoxCollider:
   serializedVersion: 3
   m_Size: {x: 2.0447772, y: 1.1866866, z: 2.3442965}
   m_Center: {x: -0.04244384, y: 0.40666363, z: -0.03486657}
+--- !u!1 &1033910034
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 1033910035}
+  m_Layer: 0
+  m_Name: Center
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &1033910035
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1033910034}
+  serializedVersion: 2
+  m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
+  m_LocalPosition: {x: 4.71, y: 0, z: 0.3499999}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 876961139}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &1047309801 stripped
 GameObject:
   m_CorrespondingSourceObject: {fileID: -7663657706562997740, guid: 0795b596d072a714c95e59ccfccb3566, type: 3}
@@ -18665,7 +18713,7 @@ SceneRoots:
   - {fileID: 1380797813}
   - {fileID: 1312392045}
   - {fileID: 1281208633}
-  - {fileID: 927475890}
+  - {fileID: 876961139}
   - {fileID: 975570878}
   - {fileID: 693088794}
   - {fileID: 1499351114}
