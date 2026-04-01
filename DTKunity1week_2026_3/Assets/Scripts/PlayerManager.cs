@@ -34,6 +34,9 @@ public class PlayerManager : MonoBehaviour
     [Header("プレイヤーのAnimator")]
     [SerializeField] private Animator _playerAnimator;
 
+    [SerializeField] private AudioSource _audioSource;
+    [SerializeField] private AudioClip[] _seClips;
+
 
     //WASD入力を受け取る
     private Vector2 _moveInput;
@@ -48,7 +51,7 @@ public class PlayerManager : MonoBehaviour
     //アニメーション終了を取得
     private AnimatorStateInfo _animeInfo;
 
-    private bool _wasDead=false;
+    private bool _wasDead = false;
 
     private void Start()
     {
@@ -129,6 +132,7 @@ public class PlayerManager : MonoBehaviour
     public async UniTask Backstab()
     {
         Debug.Log("Backstab");
+        _audioSource.PlayOneShot(_seClips[0]);
         await HitStopManager.DoHitStop(0.2f, 800);
     }
 
@@ -139,7 +143,7 @@ public class PlayerManager : MonoBehaviour
 
     public async UniTask GameOver()
     {
-        _playerAnimator.SetBool("die",true);
+        _playerAnimator.SetBool("die", true);
         await UniTask.WaitUntil(() =>
             {
                 var state = _playerAnimator.GetCurrentAnimatorStateInfo(0);
@@ -150,9 +154,9 @@ public class PlayerManager : MonoBehaviour
 
     private void OnTriggerEnter(Collider other)
     {
-        if (other.CompareTag("EnemyAttack")&&!_wasDead)
+        if (other.CompareTag("EnemyAttack") && !_wasDead)
         {
-            _wasDead=true;
+            _wasDead = true;
             GameOver().Forget();
         }
     }

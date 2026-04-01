@@ -31,7 +31,7 @@ public class EnemyShieldSystem : MonoBehaviour
 
         Vector3 hitPos = other.ClosestPoint(transform.position);
 
-        if (dot < 0) // 正面判定（今回は背後をガードに設定）
+        if (dot >= 0) // 正面判定（今回は背後をガードに設定）
         {
             Debug.Log("正面ガード成功！");
             PlayEffect(hitEffectPrefab, hitPos);
@@ -71,7 +71,7 @@ public class EnemyShieldSystem : MonoBehaviour
             return state.IsName("Armature|die 0") && state.normalizedTime >= 1.0f;
         });
         _enemyAnimator.SetBool("die", false);
-        ScoreManager.score+=100;
+        ScoreManager.SetScoreTMP(10);
         Destroy(gameObject);
     }
 }
