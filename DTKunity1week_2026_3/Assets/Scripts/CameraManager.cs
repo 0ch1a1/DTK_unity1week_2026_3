@@ -55,7 +55,7 @@ public class CameraManager : MonoBehaviour
             else
             {
                 _mouseInput.y *= _smoothSpeed;
-                transform.RotateAround(_COObj.transform.position, Vector3.right, _mouseInput.y);
+                transform.RotateAround(_COObj.transform.position, Vector3.left, _mouseInput.y);
             }
         }
         else

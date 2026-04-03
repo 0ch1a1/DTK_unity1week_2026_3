@@ -456,7 +456,7 @@ MonoBehaviour:
   - {fileID: 1683795277878903648, guid: eb5528e13e389bd438195c85f8f7c9e2, type: 3}
   currentItem: 0
   thisScript: {fileID: 291960829}
-  markerMove_Script: {fileID: 1765299466}
+  _markerObj: {fileID: 0}
 --- !u!1 &429030669
 GameObject:
   m_ObjectHideFlags: 0
@@ -1074,10 +1074,11 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 94d31ae1c572d5b43a7136311625ad67, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::Ochiai_MarkerMove_Script
-  playerTrans: {fileID: 291960828}
-  groundTrans: {fileID: 1869470246}
   itemSpawn_Script: {fileID: 291960829}
-  itemMove_Script: {fileID: 0}
+  _markerObj: {fileID: 0}
+  _playerObj: {fileID: 0}
+  _playerAnimator: {fileID: 0}
+  _pm: {fileID: 0}
 --- !u!64 &1765299467
 MeshCollider:
   m_ObjectHideFlags: 0

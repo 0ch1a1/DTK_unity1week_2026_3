@@ -14,8 +14,8 @@ GameObject:
   - component: {fileID: 2012112301933761099}
   - component: {fileID: 6614926437760058747}
   m_Layer: 0
-  m_Name: Field
-  m_TagString: Untagged
+  m_Name: SmokeField
+  m_TagString: Weed
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -126,5 +126,5 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 365137897eb70c5449bad49e64bedb58, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::Ochiai_FieldEffect_Script
-  currentType: 1
-  DestroyTime: 0.1
+  currentType: 2
+  DestroyTime: 10

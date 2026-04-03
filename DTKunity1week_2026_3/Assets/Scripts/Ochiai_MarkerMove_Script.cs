@@ -80,7 +80,7 @@ public class Ochiai_MarkerMove_Script : MonoBehaviour
                 {
                     // âüÇµÇΩèuä‘
                     MarkerVisializeChange(true);
-                    itemSpawn_Script.ChangeSpawnItem(HangingItems.Stone);
+                    itemSpawn_Script.ChangeSpawnItem(HangingItems.Smoke);
                 }
 
                 isHolding = true;
