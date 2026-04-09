@@ -30,7 +30,7 @@ public class Ochiai_FieldEffect_Script : MonoBehaviour
        
         if (currentType == FieldType.Search)
         {
-            if (other.gameObject.tag == "Back")
+            if (other.CompareTag("Back"))
             {
                 GameObject enemyObj = other.gameObject;
                 Ochiai_EnemyMove_Script enemyMove_Script = enemyObj.GetComponent<Ochiai_EnemyMove_Script>();
