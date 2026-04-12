@@ -1,67 +1,127 @@
-using Unity.Mathematics;
 using UnityEngine;
 using UnityEngine.Splines;
 using Cysharp.Threading.Tasks;
-using static UnityEngine.GraphicsBuffer;
 using System.Threading.Tasks;
 
 [ExecuteAlways]
 public class Ochiai_EnemyMove_Script : MonoBehaviour
 {
     [SerializeField] private SplineAnimate splineAnimate;
-    //[SerializeField] private  SplineContainer spline;
-    //[SerializeField] private GameObject followObject;
+
+    [Header("動かすオブジェクト")]
+    [SerializeField] private GameObject selfObj;
     //private float t;
     //private float distance = 0f;
     [Header("移動速度")]
-    [SerializeField] private float MoveSpeed;
-    [SerializeField] private float RotateSpeed;
-    //private float SplineLength;
+    [SerializeField] private float moveSpeed;
+    [Header("回転速度")]
+    [SerializeField] private float rotateSpeed;
+    [Header("敵が攻撃する距離")]
+    [SerializeField] private float attackDis;
+    [Header("状態を遷移する時の目的までの距離")]
+    [SerializeField] private float stateChangeDis;
 
-    public bool cautionFlag;
+
 
     //private Vector3 currentTargetPos;
     public Vector3 cautionPos;
     private Vector3 startEnemyPos;
     private Quaternion startEnemyRot;
 
-    [Header("反応して向き直るまでの時間")]
-    [SerializeField] private float cationSearchSec;
-    //[Header("目的地点についてから引き返すまでの時間")]
-    //[SerializeField] private float cationWaitSec;
+    [Header("反応して行動するまでの時間")]
+    public int cationSearchMiliSec { get; private set; } = 1000;
 
-    private int waitTime; 
+    [Header("引き返すまでの時間")]
+    public int returnWaitMiliSec { get; private set; } = 1000;
 
-    private float timer = 0; 
+
+    private int waitTime;
 
     //private float cautionMoveDis;
 
-    private bool cautionInitialize;
-    private bool waitInitialize;
+    private bool isDelayed = false;
 
-    public MovingState _currentState;
-    private MovingState nextState;
+    public MovingState _currentMoveState;
+    private MovingState nextMoveState;
+
+    public ChaseOpponent _currentopponent;
 
     // Start is called once before the first execution of Update after the MonoBehaviour is created
     void Start()
     {
-        cautionInitialize = false;
-        waitInitialize = false;
-        cautionFlag = false;
+
     }
 
     // Update is called once per frame
     void Update()
     {
         MoveManager();
+        MoveController();
     }
 
-    private async Task MoveManager()
+    private void MoveManager()
     {
-        switch (_currentState)
+        switch (_currentMoveState)
         {
             case MovingState.Wait:
-                WaitMoving(waitTime);
+                if (!isDelayed)
+                {
+                    isDelayed = true;
+                    UniTask.Delay(waitTime).ContinueWith(() =>
+                    {
+                        _currentMoveState = nextMoveState;
+                        isDelayed = false;
+                    }
+                     ).Forget();
+                }
+
+                break;
+            case MovingState.Chase:
+                if (Vector3.Distance(selfObj.transform.position, cautionPos) < stateChangeDis)
+                {
+                    _currentopponent = ChaseOpponent.None;
+                    nextMoveState = MovingState.Return;
+                    waitTime = returnWaitMiliSec;
+                    _currentMoveState = MovingState.Wait;
+                }
+                //UniTask.WaitUntil(() => Vector3.Distance(transform.position, cautionPos) < stateChangeDis).ContinueWith(() =>
+                //{
+                //    nextMoveState = MovingState.Return;
+                //    waitTime = returnWaitMiliSec;
+                //    _currentMoveState = MovingState.Wait;
+                //}
+                // ).Forget();
+
+                break;
+            case MovingState.Return:
+                if (Vector3.Distance(selfObj.transform.position, startEnemyPos) < stateChangeDis)
+                {
+                    splineAnimate.enabled = true;
+                    _currentMoveState = MovingState.Patrol;
+                }
+                //UniTask.WaitUntil(() => Vector3.Distance(transform.position, startEnemyPos) < stateChangeDis).ContinueWith(() =>
+                //{
+                //    splineAnimate.enabled = true;
+                //    _currentMoveState = MovingState.Patrol;
+                //}).Forget();
+                break;
+
+        }
+    }
+
+    private void MoveController()
+    {
+        switch (_currentMoveState)
+        {
+            case MovingState.Wait:
+                if (nextMoveState.Equals(MovingState.Chase))
+                {
+                    WaitMoving(cautionPos);
+                }
+                else
+                {
+                    WaitMoving(startEnemyPos);
+                }
                 break;
             case MovingState.Chase:
                 MoveForTarget(cautionPos);
@@ -71,19 +131,18 @@ public class Ochiai_EnemyMove_Script : MonoBehaviour
                 break;
             case MovingState.Return:
                 MoveForTarget(startEnemyPos);
-                await UniTask.WaitUntil(() => Vector3.Distance(transform.position, startEnemyPos) < 0.05f);
-                _currentState = MovingState.Patrol;
                 break;
 
         }
     }
 
-    private async Task MoveForTarget(Vector3 targetPos)
+    private void MoveForTarget(Vector3 targetPos)
     {
-        Vector3 planeSelf = Vector3.ProjectOnPlane(transform.forward, transform.up);
-        Vector3 planeTarget = Vector3.ProjectOnPlane(transform.position - targetPos, transform.up);
+        Vector3 planeSelf = Vector3.ProjectOnPlane(selfObj.transform.forward, selfObj.transform.up);
+        Vector3 planeTarget = Vector3.ProjectOnPlane(targetPos, selfObj.transform.up);
 
-        float signedAngle = Vector3.SignedAngle(planeSelf, planeTarget, transform.up);
+        float distance = Vector3.Distance(planeSelf, planeTarget);
+
 
         // ターゲットへの方向を計算
         Vector3 direction = (planeTarget - planeSelf).normalized;
@@ -92,86 +151,79 @@ public class Ochiai_EnemyMove_Script : MonoBehaviour
         {
             // 現在の向きからターゲットの向きへ少しずつ回転
             Quaternion lookRotation = Quaternion.LookRotation(direction);
-            transform.rotation = Quaternion.Slerp(transform.rotation, lookRotation, Time.deltaTime * RotateSpeed);
+            selfObj.transform.rotation = Quaternion.Slerp(selfObj.transform.rotation, lookRotation, Time.deltaTime * rotateSpeed);
         }
 
-        await UniTask.WaitUntil(() => Mathf.Abs(signedAngle) < 0.01f);
-        transform.position = Vector3.MoveTowards(transform.position, targetPos, MoveSpeed);
+        if (distance > attackDis)
+        {
+            selfObj.transform.position = Vector3.MoveTowards(selfObj.transform.position, targetPos, moveSpeed * Time.deltaTime);
+        }
     }
 
-    private void WaitMoving(int waitMilliSec)
+    private void WaitMoving(Vector3 targetPos)
     {
-        UniTask.Delay(waitMilliSec).ContinueWith(() =>
+
+        Vector3 planeSelf = Vector3.ProjectOnPlane(selfObj.transform.forward, selfObj.transform.up);
+        Vector3 planeTarget = Vector3.ProjectOnPlane(targetPos, selfObj.transform.up);
+
+        // ターゲットへの方向を計算
+        Vector3 direction = (planeTarget - planeSelf).normalized;
+
+        if (direction != Vector3.zero)
         {
-            _currentState = nextState;
+            // 現在の向きからターゲットの向きへ少しずつ回転
+            Quaternion lookRotation = Quaternion.LookRotation(direction);
+            selfObj.transform.rotation = Quaternion.Slerp(selfObj.transform.rotation, lookRotation, Time.deltaTime * rotateSpeed);
         }
-         ).Forget();
-
-        timer -= Time.deltaTime;
-
-        //Vector3 selfPos = new Vector3(transform.position.x, 0, transform.position.z);
-        //Vector3 targetPos = new Vector3(cautionPos.x, 0, cautionPos.z);
-
-        //// ターゲットへの方向を計算
-        //Vector3 direction = (targetPos - selfPos).normalized;
-        
-        //if(timer > waitMilliSec / 2)
-        //{
-        //    if (direction != Vector3.zero)
-        //    {
-        //        // 現在の向きからターゲットの向きへ少しずつ回転
-        //        Quaternion lookRotation = Quaternion.LookRotation(direction);
-        //        transform.rotation = Quaternion.Slerp(transform.rotation, lookRotation, Time.deltaTime * RotateSpeed);
-        //    }
-        //}
-        //else if(timer < waitMilliSec / 2)
-        //{
-            
-        //    transform.rotation = Quaternion.Slerp(transform.rotation, startEnemyRot, Time.deltaTime * RotateSpeed);
-        //}
-
-        
-
-
-        if (timer < 0)
-        {
-            //if(changeState == MovingState.Patrol)
-            //{
-            //    currentTargetPos = startEnemyTrans.position;
-            //}
-            //else if(changeState == MovingState.Chase)
-            //{
-            //    currentTargetPos = cautionPos;
-            //}
-            //    _currentState = MovingState.Chase;
-            splineAnimate.enabled = true;
-            _currentState = MovingState.Patrol;
-
-        } 
     }
 
     private void MoveOnSpline()
     {
 
-
-        if (!splineAnimate.enabled)
-        {
-            splineAnimate.enabled = true;
-        }
-
-        if (cautionFlag)
-        {
-            waitTime = cationSearchSec;
-            splineAnimate.enabled = false;
-            //changeState = MovingState.Chase;
-            startEnemyPos = transform.position; 
-            startEnemyRot = transform.rotation;
-            _currentState = MovingState.Wait;
-            cautionFlag = false;
-        }
-
-        
     }
+
+    public void OnFind()    //playerが視界に入った時に実行する関数
+    {
+        if (!_currentMoveState.Equals(MovingState.Chase))
+        {
+            cationSearchMiliSec = 100;
+            _currentopponent = ChaseOpponent.Player;
+            waitTime = cationSearchMiliSec;
+            splineAnimate.enabled = false;
+            nextMoveState = MovingState.Chase;
+            startEnemyPos = selfObj.transform.position;
+            startEnemyRot = selfObj.transform.rotation;
+            _currentMoveState = MovingState.Wait;
+        }
+    }
+
+    public void OnCaution()    //石の効果範囲に入った時に実行する関数
+    {
+        if (!_currentMoveState.Equals(MovingState.Chase) && !_currentopponent.Equals(ChaseOpponent.Player))
+        {
+            cationSearchMiliSec = 1500;
+            _currentopponent = ChaseOpponent.Stone;
+            waitTime = cationSearchMiliSec;
+            splineAnimate.enabled = false;
+            nextMoveState = MovingState.Chase;
+            startEnemyPos = selfObj.transform.position;
+            startEnemyRot = selfObj.transform.rotation;
+            _currentMoveState = MovingState.Wait;
+
+        }
+    }
+
+    public void OnLose()    //playerを見失ったときに実行する関数
+    {
+        if (_currentMoveState.Equals(MovingState.Chase))
+        {
+            nextMoveState = MovingState.Return;
+            waitTime = returnWaitMiliSec;
+            _currentMoveState = MovingState.Wait;
+        }
+
+    }
+
 }
 public enum MovingState
 {
@@ -179,4 +231,11 @@ public enum MovingState
     Patrol,
     Chase,
     Return
+}
+
+public enum ChaseOpponent
+{
+    None,
+    Player,
+    Stone
 }

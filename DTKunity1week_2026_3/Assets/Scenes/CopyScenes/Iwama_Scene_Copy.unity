@@ -8025,11 +8025,14 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::Ochiai_EnemyMove_Script
   splineAnimate: {fileID: 335712439}
-  RotateSpeed: 2
-  cautionFlag: 0
+  selfObj: {fileID: 335712437}
+  moveSpeed: 5
+  rotateSpeed: 5
+  attackDis: 1
+  stateChangeDis: 1
   cautionPos: {x: 0, y: 0, z: 0}
-  cationSearchSec: 5
-  _currentState: 1
+  _currentMoveState: 1
+  _currentopponent: 0
 --- !u!1 &1075933011 stripped
 GameObject:
   m_CorrespondingSourceObject: {fileID: -882812885798724768, guid: 0795b596d072a714c95e59ccfccb3566, type: 3}
@@ -20082,6 +20085,30 @@ PrefabInstance:
     - target: {fileID: 834789365691975822, guid: 8b7f5aa107893c2478c616bd40584987, type: 3}
       propertyPath: m_Name
       value: Enemy
+      objectReference: {fileID: 0}
+    - target: {fileID: 4784564269212108096, guid: 8b7f5aa107893c2478c616bd40584987, type: 3}
+      propertyPath: _enemyMoveScript
+      value: 
+      objectReference: {fileID: 1067235100}
+    - target: {fileID: 6649359417486373889, guid: 8b7f5aa107893c2478c616bd40584987, type: 3}
+      propertyPath: m_LocalRotation.w
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 6649359417486373889, guid: 8b7f5aa107893c2478c616bd40584987, type: 3}
+      propertyPath: m_LocalRotation.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 6649359417486373889, guid: 8b7f5aa107893c2478c616bd40584987, type: 3}
+      propertyPath: m_LocalRotation.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 6649359417486373889, guid: 8b7f5aa107893c2478c616bd40584987, type: 3}
+      propertyPath: m_LocalRotation.z
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 6649359417486373889, guid: 8b7f5aa107893c2478c616bd40584987, type: 3}
+      propertyPath: m_LocalEulerAnglesHint.y
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 7480777573534580127, guid: 8b7f5aa107893c2478c616bd40584987, type: 3}
       propertyPath: m_LocalPosition.x

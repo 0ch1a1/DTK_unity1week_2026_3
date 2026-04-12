@@ -16,9 +16,13 @@ public class EnemyLookArea : MonoBehaviour
     [SerializeField] private GameObject _center;
     [SerializeField] private Rigidbody _rb;
 
+    [Header("敵の動きの制御するスクリプト")]
+    [SerializeField] private Ochiai_EnemyMove_Script _enemyMoveScript;
+
     private bool attacking = false;
     private bool _search = true;
     private GameObject _foundObj;
+
     private void Start()
     {
         // 初期状態ではオフにしておく（必要であれば）
@@ -47,6 +51,7 @@ public class EnemyLookArea : MonoBehaviour
                 {
                     foundPlayer = true;
                     _foundObj = hit.collider.gameObject;
+                    _enemyMoveScript.cautionPos = hit.collider.gameObject.transform.position;
                     Debug.DrawRay(transform.position, dir * hit.distance, Color.red);
                     break;
                 }
@@ -58,6 +63,7 @@ public class EnemyLookArea : MonoBehaviour
         if (foundPlayer && !attacking)
         {
             attacking = true;
+            _enemyMoveScript.OnFind();
             ActivateTarget().Forget();
         }
     }

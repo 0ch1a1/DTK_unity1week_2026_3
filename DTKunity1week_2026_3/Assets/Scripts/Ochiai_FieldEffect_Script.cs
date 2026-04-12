@@ -1,3 +1,4 @@
+using Cysharp.Threading.Tasks;
 using UnityEngine;
 
 public class Ochiai_FieldEffect_Script : MonoBehaviour
@@ -35,7 +36,7 @@ public class Ochiai_FieldEffect_Script : MonoBehaviour
                 GameObject enemyObj = other.gameObject;
                 Ochiai_EnemyMove_Script enemyMove_Script = enemyObj.GetComponent<Ochiai_EnemyMove_Script>();
                 enemyMove_Script.cautionPos = transform.position;
-                enemyMove_Script.cautionFlag = true;
+                enemyMove_Script.OnCaution();
             }
         }
     }
