@@ -73,6 +73,7 @@ public class EnemyLookArea : MonoBehaviour
         if (objectToActivate != null && !objectToActivate.activeSelf)
         {
             gameObject.transform.LookAt(_foundObj.transform.position);
+            Debug.Log(_foundObj);
             _enemyAnimator.SetBool("attack", true);
             await UniTask.Delay(400);
             objectToActivate.SetActive(true);

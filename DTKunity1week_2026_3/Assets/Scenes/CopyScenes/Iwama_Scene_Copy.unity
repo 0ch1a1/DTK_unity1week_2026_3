@@ -8028,8 +8028,8 @@ MonoBehaviour:
   selfObj: {fileID: 335712437}
   moveSpeed: 5
   rotateSpeed: 5
-  attackDis: 1
-  stateChangeDis: 1
+  attackDis: 5
+  stateChangeDis: 5
   cautionPos: {x: 0, y: 0, z: 0}
   _currentMoveState: 1
   _currentopponent: 0

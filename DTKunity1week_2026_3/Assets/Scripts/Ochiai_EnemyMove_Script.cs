@@ -184,15 +184,19 @@ public class Ochiai_EnemyMove_Script : MonoBehaviour
 
     public void OnFind()    //player‚ª‹ŠE‚É“ü‚Á‚½‚ÉÀs‚·‚éŠÖ”
     {
-        if (!_currentMoveState.Equals(MovingState.Chase))
+        if (!_currentMoveState.Equals(MovingState.Chase) && !_currentMoveState.Equals(MovingState.Wait))
         {
             cationSearchMiliSec = 100;
             _currentopponent = ChaseOpponent.Player;
             waitTime = cationSearchMiliSec;
-            splineAnimate.enabled = false;
+            if (splineAnimate.enabled)
+            {
+                splineAnimate.enabled = false;
+                startEnemyPos = selfObj.transform.position;
+                startEnemyRot = selfObj.transform.rotation;
+
+            }
             nextMoveState = MovingState.Chase;
-            startEnemyPos = selfObj.transform.position;
-            startEnemyRot = selfObj.transform.rotation;
             _currentMoveState = MovingState.Wait;
         }
     }
