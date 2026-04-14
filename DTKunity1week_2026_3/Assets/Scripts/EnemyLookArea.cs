@@ -13,8 +13,6 @@ public class EnemyLookArea : MonoBehaviour
     [Header("アクティブにするオブジェクト")]
     [SerializeField] private GameObject objectToActivate;
     [SerializeField] private Animator _enemyAnimator;
-    [SerializeField] private GameObject _center;
-    [SerializeField] private Rigidbody _rb;
 
     [Header("敵の動きの制御するスクリプト")]
     [SerializeField] private Ochiai_EnemyMove_Script _enemyMoveScript;
@@ -38,7 +36,7 @@ public class EnemyLookArea : MonoBehaviour
         _search = true;
 
         float spread = 30f; // 視野角（左右30度）
-        int rayNum = 5;
+        int rayNum =  5;
 
         for (int i = 0; i < rayNum; i++)
         {
@@ -51,6 +49,7 @@ public class EnemyLookArea : MonoBehaviour
                 {
                     foundPlayer = true;
                     _foundObj = hit.collider.gameObject;
+                    gameObject.transform.LookAt(_foundObj.transform.position);
                     _enemyMoveScript.cautionPos = hit.collider.gameObject.transform.position;
                     Debug.DrawRay(transform.position, dir * hit.distance, Color.red);
                     break;
@@ -72,8 +71,6 @@ public class EnemyLookArea : MonoBehaviour
     {
         if (objectToActivate != null && !objectToActivate.activeSelf)
         {
-            gameObject.transform.LookAt(_foundObj.transform.position);
-            Debug.Log(_foundObj);
             _enemyAnimator.SetBool("attack", true);
             await UniTask.Delay(400);
             objectToActivate.SetActive(true);

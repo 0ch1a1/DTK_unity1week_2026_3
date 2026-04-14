@@ -104,6 +104,15 @@
                     "processors": "",
                     "interactions": "",
                     "initialStateCheck": false
+                },
+                {
+                    "name": "Selecto",
+                    "type": "Button",
+                    "id": "4b220cd4-f8c0-4b48-9227-b633b8e596f4",
+                    "expectedControlType": "",
+                    "processors": "",
+                    "interactions": "",
+                    "initialStateCheck": false
                 }
             ],
             "bindings": [
@@ -544,6 +553,17 @@
                     "processors": "",
                     "groups": "",
                     "action": "Item",
+                    "isComposite": false,
+                    "isPartOfComposite": false
+                },
+                {
+                    "name": "",
+                    "id": "4a59aa9a-c71c-4370-b75b-32abda78c80f",
+                    "path": "",
+                    "interactions": "",
+                    "processors": "",
+                    "groups": "",
+                    "action": "Selecto",
                     "isComposite": false,
                     "isPartOfComposite": false
                 }

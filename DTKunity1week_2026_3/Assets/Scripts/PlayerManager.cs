@@ -133,7 +133,6 @@ public class PlayerManager : MonoBehaviour
     {
         Debug.Log("Backstab");
         _audioSource.PlayOneShot(_seClips[0]);
-        await HitStopManager.DoHitStop(0.2f, 800);
     }
 
     private void OnLook(InputValue value)
