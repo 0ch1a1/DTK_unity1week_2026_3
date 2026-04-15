@@ -87,7 +87,7 @@ public class Ochiai_ItemEffect_Script : MonoBehaviour
 
         foreach (RaycastHit hit in hits)
         {
-            if (hit.collider.gameObject.tag == "ground")
+            if (hit.collider.gameObject.CompareTag("ground"))
             {
                 Vector3 genePos = new Vector3(hit.point.x, hit.point.y + 0.1f, hit.point.z);
                 GameObject searchObj = Instantiate(field, genePos, field.transform.rotation);

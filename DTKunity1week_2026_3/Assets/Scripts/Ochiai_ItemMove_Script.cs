@@ -23,7 +23,6 @@ public class Ochiai_ItemMove_Script : MonoBehaviour
     {
         Rigidbody itemRb = gameObject.GetComponent<Rigidbody>();
         itemRb.linearVelocity = CalculateVelocity(targetTrans.position, startTrans.position, shootAngle);
-        Debug.Log("アイテム" + itemRb.linearVelocity);
     }
 
     //アイテムの運動のベクトルを計算する関数

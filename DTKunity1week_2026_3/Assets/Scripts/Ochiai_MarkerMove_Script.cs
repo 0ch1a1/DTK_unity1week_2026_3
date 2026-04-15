@@ -9,7 +9,7 @@ public class Ochiai_MarkerMove_Script : MonoBehaviour
     [SerializeField] private Ochiai_ItemSpawn_Script itemSpawn_Script;
     [SerializeField] private GameObject _markerObj;
     [SerializeField] private GameObject _playerObj;
-    [Header("プレイヤーのAnimator")]
+    [Header("プレイヤ拏のAnimator")]
     [SerializeField] private Animator _playerAnimator;
 
     private Vector3 currentPos;
@@ -34,7 +34,7 @@ public class Ochiai_MarkerMove_Script : MonoBehaviour
         }
     }
 
-    //マーカーを動かす関数
+    //マ拏カ拏を動かす関摧
     private Vector3 MarkerMove()
     {
         //Ray ray = Camera.main.ScreenPointToRay(Mouse.current.position.ReadValue());
@@ -78,17 +78,16 @@ public class Ochiai_MarkerMove_Script : MonoBehaviour
             {
                 if (!isHolding)
                 {
-                    // 押した瞬間
+                    // 押した掎間
                     MarkerVisializeChange(true);
-                    itemSpawn_Script.ChangeSpawnItem(HangingItems.Smoke);
                 }
 
                 isHolding = true;
             }
             else
             {
-                // 離した瞬間
-                //等価方向へプレイヤーモデルを向ける
+                // 離した掎間
+                //等価方向へプレイヤ拏モデルを向ける
                 _pm.controllerStop = true;
                 _playerObj.transform.forward = _markerObj.transform.position - _playerObj.transform.position;
                 _playerAnimator.SetBool("item", true);

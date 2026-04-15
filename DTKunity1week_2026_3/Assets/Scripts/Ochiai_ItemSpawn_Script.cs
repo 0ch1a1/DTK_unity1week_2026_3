@@ -51,6 +51,7 @@ public class Ochiai_ItemSpawn_Script : MonoBehaviour
         if (currentItem != HangingItems.None)
         {
             GameObject cloneItemObj = Instantiate(currentSpawnObj, spawnTrans.position, spawnTrans.rotation);
+            Debug.Log(cloneItemObj);
             Ochiai_ItemMove_Script ItemMove_Script = cloneItemObj.GetComponent<Ochiai_ItemMove_Script>();
             ItemMove_Script.ItemMove(_markerObj.transform, spawnTrans);
             currentItem = HangingItems.None;
