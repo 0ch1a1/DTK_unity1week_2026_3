@@ -1,3 +1,4 @@
+using Unity.VisualScripting;
 using UnityEngine;
 using UnityEngine.InputSystem;
 
@@ -13,6 +14,7 @@ public class Ochiai_ItemSpawn_Script : MonoBehaviour
     [Header("このスクリプト")]
     [SerializeField] private Ochiai_ItemSpawn_Script thisScript;
     [SerializeField] private GameObject _markerObj;
+    [SerializeField] private UIManager _UIManagerSc;
     // Start is called once before the first execution of Update after the MonoBehaviour is created
     void Start()
     {
@@ -28,6 +30,7 @@ public class Ochiai_ItemSpawn_Script : MonoBehaviour
     //持っている（生成する）アイテムの種類を変える関数
     public void ChangeSpawnItem(HangingItems getItem)
     {
+
         currentItem = getItem;
 
         switch (currentItem)
@@ -42,6 +45,7 @@ public class Ochiai_ItemSpawn_Script : MonoBehaviour
                 currentSpawnObj = spawnObjs[1];
                 break;
         }
+        _UIManagerSc.ChangeItemIcon(currentItem);
     }
 
     //アイテムを生成する関数
@@ -55,6 +59,8 @@ public class Ochiai_ItemSpawn_Script : MonoBehaviour
             Ochiai_ItemMove_Script ItemMove_Script = cloneItemObj.GetComponent<Ochiai_ItemMove_Script>();
             ItemMove_Script.ItemMove(_markerObj.transform, spawnTrans);
             currentItem = HangingItems.None;
+            _UIManagerSc.ChangeItemIcon(currentItem);
+
         }
     }
 }

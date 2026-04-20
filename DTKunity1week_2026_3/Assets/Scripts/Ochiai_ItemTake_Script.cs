@@ -1,6 +1,8 @@
 using System.Runtime.Serialization;
 using Unity.VisualScripting;
 using UnityEngine;
+using Cysharp.Threading.Tasks;
+
 
 public class Ochiai_ItemTake_Script : MonoBehaviour
 {
@@ -44,6 +46,7 @@ public class Ochiai_ItemTake_Script : MonoBehaviour
         if (other.gameObject.tag == "Player")
         {
             TakeItem();
+            UniTask.Delay(1000).Forget();
         }
     }
 }

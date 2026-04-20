@@ -3095,7 +3095,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!224 &415516687
 RectTransform:
   m_ObjectHideFlags: 0
@@ -3237,6 +3237,53 @@ CapsuleCollider:
   m_Height: 3.8713222
   m_Direction: 1
   m_Center: {x: 0.000004529953, y: 1.94, z: 0.000014066696}
+--- !u!1 &427094081
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 427094083}
+  - component: {fileID: 427094082}
+  m_Layer: 0
+  m_Name: UIManager
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!114 &427094082
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 427094081}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: cb06ce0525f492f438478bd06a975407, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::UIManager
+  _itemIcons:
+  - {fileID: 415516686}
+  - {fileID: 1164850010}
+--- !u!4 &427094083
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 427094081}
+  serializedVersion: 2
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: -121.13778, y: 0.00001, z: 1464.2534}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 0}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &429180742 stripped
 GameObject:
   m_CorrespondingSourceObject: {fileID: 9099863275281227756, guid: 0795b596d072a714c95e59ccfccb3566, type: 3}
@@ -8939,7 +8986,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!224 &1164850011
 RectTransform:
   m_ObjectHideFlags: 0
@@ -10423,6 +10470,7 @@ MonoBehaviour:
   currentItem: 0
   thisScript: {fileID: 1281208635}
   _markerObj: {fileID: 975570874}
+  _UIManagerSc: {fileID: 427094082}
 --- !u!82 &1281208636
 AudioSource:
   m_ObjectHideFlags: 0
@@ -20550,7 +20598,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 7480777573534580127, guid: 8b7f5aa107893c2478c616bd40584987, type: 3}
       propertyPath: m_LocalPosition.x
-      value: -17.21
+      value: -18.9059
       objectReference: {fileID: 0}
     - target: {fileID: 7480777573534580127, guid: 8b7f5aa107893c2478c616bd40584987, type: 3}
       propertyPath: m_LocalPosition.y
@@ -20558,7 +20606,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 7480777573534580127, guid: 8b7f5aa107893c2478c616bd40584987, type: 3}
       propertyPath: m_LocalPosition.z
-      value: -21.38
+      value: -24.18
       objectReference: {fileID: 0}
     - target: {fileID: 7480777573534580127, guid: 8b7f5aa107893c2478c616bd40584987, type: 3}
       propertyPath: m_LocalRotation.w
@@ -20617,3 +20665,4 @@ SceneRoots:
   - {fileID: 1603890773}
   - {fileID: 1665877232}
   - {fileID: 2007538154}
+  - {fileID: 427094083}
