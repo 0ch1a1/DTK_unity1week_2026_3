@@ -34,6 +34,9 @@ public class Ochiai_EnemyMove_Script : MonoBehaviour
     [Header("引き返すまでの時間")]
     public int returnWaitMiliSec { get; private set; } = 1000;
 
+    [SerializeField] private Animator _enemyAnimator;
+
+
 
     private int waitTime;
 
@@ -45,10 +48,13 @@ public class Ochiai_EnemyMove_Script : MonoBehaviour
     private MovingState nextMoveState;
 
     public ChaseOpponent _currentopponent;
+    private bool _isMoving = true;
+    private Vector3 _prevPos;
 
     // Start is called once before the first execution of Update after the MonoBehaviour is created
     void Start()
     {
+        _prevPos = selfObj.transform.position;
 
     }
 
@@ -72,7 +78,7 @@ public class Ochiai_EnemyMove_Script : MonoBehaviour
                         _currentMoveState = nextMoveState;
                         isDelayed = false;
                     }
-                     ).Forget();
+                    ).Forget();
                 }
 
                 break;
@@ -111,6 +117,7 @@ public class Ochiai_EnemyMove_Script : MonoBehaviour
 
     private void MoveController()
     {
+        _isMoving = false;
         switch (_currentMoveState)
         {
             case MovingState.Wait:
@@ -134,9 +141,10 @@ public class Ochiai_EnemyMove_Script : MonoBehaviour
                 break;
 
         }
+        _enemyAnimator.SetBool("run", _isMoving);
     }
 
-    private void MoveForTarget(Vector3 targetPos)
+    /*private void MoveForTarget(Vector3 targetPos)
     {
         Vector3 planeSelf = Vector3.ProjectOnPlane(selfObj.transform.forward, selfObj.transform.up);
         Vector3 planeTarget = Vector3.ProjectOnPlane(targetPos, selfObj.transform.up);
@@ -158,9 +166,33 @@ public class Ochiai_EnemyMove_Script : MonoBehaviour
         {
             selfObj.transform.position = Vector3.MoveTowards(selfObj.transform.position, targetPos, moveSpeed * Time.deltaTime);
         }
-    }
+    }*/
 
-    private void WaitMoving(Vector3 targetPos)
+    private void MoveForTarget(Vector3 targetPos)
+    {
+        // 正しい方向計算（位置ベース）
+        Vector3 direction = targetPos - selfObj.transform.position;
+        direction.y = 0; // 水平のみ
+
+        float distance = direction.magnitude;
+
+        if (direction != Vector3.zero)
+        {
+            Quaternion lookRotation = Quaternion.LookRotation(direction);
+            selfObj.transform.rotation = lookRotation; // ← 即時回転
+        }
+
+        if (distance > attackDis)
+        {
+            selfObj.transform.position = Vector3.MoveTowards(
+                selfObj.transform.position,
+                targetPos,
+                moveSpeed * Time.deltaTime
+            );
+            _isMoving = true;
+        }
+    }
+    /*private void WaitMoving(Vector3 targetPos)
     {
 
         Vector3 planeSelf = Vector3.ProjectOnPlane(selfObj.transform.forward, selfObj.transform.up);
@@ -175,11 +207,29 @@ public class Ochiai_EnemyMove_Script : MonoBehaviour
             Quaternion lookRotation = Quaternion.LookRotation(direction);
             selfObj.transform.rotation = Quaternion.Slerp(selfObj.transform.rotation, lookRotation, Time.deltaTime * rotateSpeed);
         }
+    }*/
+    private void WaitMoving(Vector3 targetPos)
+    {
+        Vector3 direction = targetPos - selfObj.transform.position;
+        direction.y = 0; // 水平のみ
+
+        if (direction != Vector3.zero)
+        {
+            Quaternion lookRotation = Quaternion.LookRotation(direction);
+            selfObj.transform.rotation = lookRotation; // ← 即時回転
+        }
     }
 
     private void MoveOnSpline()
     {
+        float moved = Vector3.Distance(selfObj.transform.position, _prevPos);
 
+        if (moved > 0.001f)
+        {
+            _isMoving = true;
+        }
+
+        _prevPos = selfObj.transform.position;
     }
 
     public void OnFind()    //playerが視界に入った時に実行する関数

@@ -37,6 +37,8 @@ public class PlayerManager : MonoBehaviour
     [SerializeField] private AudioSource _audioSource;
     [SerializeField] private AudioClip[] _seClips;
 
+    [SerializeField]private UIManager _uiManager;
+
 
     //WASD入力を受け取る
     private Vector2 _moveInput;
@@ -149,6 +151,7 @@ public class PlayerManager : MonoBehaviour
                 return state.IsName("Armature|die") && state.normalizedTime >= 1.0f;
             });
         Debug.Log("死んだ");
+        _uiManager.TransitionGameOver();
     }
 
     private void OnTriggerEnter(Collider other)

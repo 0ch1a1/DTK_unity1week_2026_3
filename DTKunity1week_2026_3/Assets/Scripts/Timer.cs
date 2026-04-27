@@ -1,10 +1,12 @@
 using UnityEngine;
-using TMPro; 
+using TMPro;
+using Unity.VisualScripting;
 
 public class Timer : MonoBehaviour
 {
     public float timeLeft = 60f;
     public TextMeshProUGUI timerText;
+    [SerializeField]private UIManager _uiManager;
 
     void Update()
     {
@@ -31,5 +33,6 @@ public class Timer : MonoBehaviour
     void OnTimerEnd()
     {
         Debug.Log("タイマー終了！");
+        _uiManager.TransitionResult();
     }
 }

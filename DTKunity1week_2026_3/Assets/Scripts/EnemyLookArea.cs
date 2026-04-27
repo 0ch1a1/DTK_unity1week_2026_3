@@ -16,11 +16,13 @@ public class EnemyLookArea : MonoBehaviour
 
     [Header("敵の動きの制御するスクリプト")]
     [SerializeField] private Ochiai_EnemyMove_Script _enemyMoveScript;
+    [SerializeField] private GameObject _parentObj;
 
     private bool attacking = false;
     private bool _search = true;
     private GameObject _foundObj;
 
+    private bool _canAttack = true;
     private void Start()
     {
         // 初期状態ではオフにしておく（必要であれば）
@@ -36,20 +38,19 @@ public class EnemyLookArea : MonoBehaviour
         _search = true;
 
         float spread = 30f; // 視野角（左右30度）
-        int rayNum =  5;
+        int rayNum = 5;
 
         for (int i = 0; i < rayNum; i++)
         {
             float angle = -spread + i * (spread * 2 / (rayNum - 1));
             Vector3 dir = Quaternion.Euler(0, angle, 0) * transform.forward;
 
-            if (Physics.Raycast(transform.position, dir, out RaycastHit hit, rayDistance))
+            if (Physics.Raycast(transform.position, dir, out RaycastHit hit, rayDistance) && _canAttack)
             {
                 if (hit.collider.CompareTag(targetTag))
                 {
                     foundPlayer = true;
                     _foundObj = hit.collider.gameObject;
-                    gameObject.transform.LookAt(_foundObj.transform.position);
                     _enemyMoveScript.cautionPos = hit.collider.gameObject.transform.position;
                     Debug.DrawRay(transform.position, dir * hit.distance, Color.red);
                     break;
@@ -58,10 +59,12 @@ public class EnemyLookArea : MonoBehaviour
 
             Debug.DrawRay(transform.position, dir * rayDistance, Color.cyan);
         }
+
         // 検知結果に基づいてオブジェクトをアクティブ化
-        if (foundPlayer && !attacking)
+        if (foundPlayer && !attacking && _canAttack)
         {
             attacking = true;
+            _canAttack = false;
             _enemyMoveScript.OnFind();
             ActivateTarget().Forget();
         }
@@ -82,6 +85,7 @@ public class EnemyLookArea : MonoBehaviour
             _enemyAnimator.SetBool("attack", false);
             objectToActivate.SetActive(false);
             attacking = false;
+            _canAttack = true;
         }
     }
 }

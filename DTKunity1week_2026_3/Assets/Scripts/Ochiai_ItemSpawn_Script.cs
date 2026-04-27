@@ -14,7 +14,7 @@ public class Ochiai_ItemSpawn_Script : MonoBehaviour
     [Header("このスクリプト")]
     [SerializeField] private Ochiai_ItemSpawn_Script thisScript;
     [SerializeField] private GameObject _markerObj;
-    [SerializeField] private UIManager _UIManagerSc;
+    [SerializeField] private ItemUIManager _UIManagerSc;
     // Start is called once before the first execution of Update after the MonoBehaviour is created
     void Start()
     {
