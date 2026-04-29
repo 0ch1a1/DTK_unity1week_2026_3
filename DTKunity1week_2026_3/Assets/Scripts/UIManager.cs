@@ -1,8 +1,10 @@
+using Unity.VisualScripting;
 using UnityEngine;
 
 public class UIManager : MonoBehaviour
 {
     [SerializeField] private GameObject[] _UIObj;
+    [SerializeField]private ResultManager _resultManager;
     // Start is called once before the first execution of Update after the MonoBehaviour is created
     void Start()
     {
@@ -19,7 +21,7 @@ public class UIManager : MonoBehaviour
     {
         _UIObj[0].SetActive(false);
         _UIObj[1].SetActive(true);
-        Time.timeScale = 0;
+        _resultManager.SetResultScore(ScoreManager.score);
 
     }
 
@@ -27,6 +29,5 @@ public class UIManager : MonoBehaviour
     {
         _UIObj[0].SetActive(false);
         _UIObj[2].SetActive(true);
-        Time.timeScale = 0;
     }
 }
