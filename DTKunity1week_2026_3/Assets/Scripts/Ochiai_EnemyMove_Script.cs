@@ -59,11 +59,11 @@ public class Ochiai_EnemyMove_Script : MonoBehaviour
         MoveController();
     }
 
-    private void MoveManager()
+    private void MoveManager()      //ó‹µ‚É‰‚¶‚Ä_currentMoveState‚ğØ‚è‘Ö‚¦‚éŠÖ”
     {
         switch (_currentMoveState)
         {
-            case MovingState.Wait:
+            case MovingState.Wait:  //w’è‚ÌŠÔŒã‚ÉŒ»İ‚Ìstate‚ğnextMoveState‚Ìstate‚É•Ï‚¦‚é
                 if (!isDelayed)
                 {
                     isDelayed = true;
@@ -76,7 +76,7 @@ public class Ochiai_EnemyMove_Script : MonoBehaviour
                 }
 
                 break;
-            case MovingState.Chase:
+            case MovingState.Chase: //’Ç‚Á‚Ä‚¢‚é–Ú•W‚É’Ç‚¢‚Â‚­‚Æreturn‚Ìstate‚É•Ï‚¦‚é
                 if (Vector3.Distance(selfObj.transform.position, cautionPos) < stateChangeDis)
                 {
                     _currentopponent = ChaseOpponent.None;
@@ -93,7 +93,7 @@ public class Ochiai_EnemyMove_Script : MonoBehaviour
                 // ).Forget();
 
                 break;
-            case MovingState.Return:
+            case MovingState.Return:  //„‰ñêŠ‚É’…‚­‚Æpatrol‚Ìstate‚ÉØ‚è‘Ö‚¦‚é
                 if (Vector3.Distance(selfObj.transform.position, startEnemyPos) < stateChangeDis)
                 {
                     splineAnimate.enabled = true;
